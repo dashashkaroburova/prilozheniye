@@ -2,8 +2,12 @@ import sys
 from random import randint
 
 from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QLineEdit
 from database import *
+
+import matplotlib.pyplot as plt
+import datetime as dt
 
 
 class MyWidget(QMainWindow):
@@ -11,6 +15,8 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('project.ui', self)
         self.stackedWidget.setCurrentIndex(0)
+        self.setWindowTitle("MySocialScienceExam")
+        self.setFixedSize(1101, 831)
 
         styles = '''
         QMainWindow{
@@ -246,7 +252,8 @@ class MyWidget(QMainWindow):
     def open_profile(self):
         self.stackedWidget.setCurrentIndex(7)
         temp = self.answers.get_answers(self.user[0])
-        self.num_tasks.setText(str(len(temp)))
+        print(self.tasks.get_tasks_count())
+        self.num_tasks.setText(f'{len(temp)} из {self.tasks.get_tasks_count()}')
         self.stat_table.setColumnCount(3)
         self.stat_table.setHorizontalHeaderLabels(['Дата', 'Тема', 'Количество'])
 
@@ -272,6 +279,10 @@ class MyWidget(QMainWindow):
                 f"Прогресс за последние дни: {sum(dates[date2].values()) - sum(dates[date1].values())}")
         except IndexError:
             print("Пупупу")
+
+        create_plots(dates, self.tasks.get_tasks_count())
+        self.diagram1.setPixmap(QPixmap("delta_dates.png"))
+        self.diagram2.setPixmap(QPixmap("progress.png"))
 
     def update_password(self):
         index = self.change_ind
@@ -313,7 +324,41 @@ def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
 
 
+def create_plots(dates: dict, tasks_count):
+    dates[dt.date.today().isoformat()] = {}
+    temp = list(dates.keys())
+    current_day = temp.pop(0)
+    while current_day != temp[-1]:
+        date = dt.date.fromisoformat(str(current_day))
+        date += dt.timedelta(days=1)
+        if (current_day := date.isoformat()) not in temp:
+            dates[current_day] = {}
+
+    dates = {key: value for key, value in sorted(dates.items(), key=lambda x: dt.date.fromisoformat(x[0]))}
+    x = ["-".join(i.split("-")[1:]) for i in dates.keys()][:20]
+    y = list([sum(i.values()) for i in dates.values()])[:20]
+
+    fig, ax = plt.subplots()
+
+    ax.bar(x, y)
+    ax.set(xlabel="Даты (Месяц-День)", ylabel="Количество задач", title="Прогресс по дням")
+
+    ax.set_facecolor('seashell')
+    fig.set_facecolor('floralwhite')
+    fig.savefig("delta_dates.png")
+
+    fig, ax = plt.subplots()
+    y = [sum(y[:i + 1]) / tasks_count * 100 for i in range(len(y))]
+    ax.bar(x, y)
+    ax.set(xlabel="Даты (Месяц-День)", ylabel="Процент от общего количества задач", title="Прогресс по курсу")
+    ax.set_facecolor('seashell')
+    fig.set_facecolor('floralwhite')
+    fig.savefig("progress.png")
+
+
 if __name__ == '__main__':
+    # dates = {'2022-01-27': {'Тема 1': 3}, '2022-01-30': {'second': 1, 'seventh': 1}, '2022-01-31': {'second': 2}}
+    # create_plots(dates, 50)
     app = QApplication(sys.argv)
     ex = MyWidget()
     ex.show()

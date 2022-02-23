@@ -27,7 +27,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>7</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page_3">
      <widget class="QLabel" name="ent_reg">
@@ -793,7 +793,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>470</x>
-        <y>660</y>
+        <y>740</y>
         <width>191</width>
         <height>28</height>
        </rect>
@@ -818,25 +818,25 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>260</y>
-        <width>1111</width>
+        <x>50</x>
+        <y>270</y>
+        <width>571</width>
         <height>20</height>
        </rect>
       </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
       <property name="text">
        <string>Количество правильно решенных задач:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="num_tasks">
       <property name="geometry">
        <rect>
-        <x>800</x>
-        <y>140</y>
-        <width>61</width>
+        <x>460</x>
+        <y>270</y>
+        <width>81</width>
         <height>16</height>
        </rect>
       </property>
@@ -847,8 +847,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QTableWidget" name="stat_table">
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>330</y>
+        <x>50</x>
+        <y>400</y>
         <width>401</width>
         <height>291</height>
        </rect>
@@ -857,14 +857,46 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="progress">
       <property name="geometry">
        <rect>
-        <x>354</x>
-        <y>150</y>
+        <x>50</x>
+        <y>160</y>
         <width>411</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
        <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="diagram1">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>120</y>
+        <width>441</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="diagram2">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>420</y>
+        <width>441</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

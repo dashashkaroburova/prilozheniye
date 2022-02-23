@@ -54,6 +54,9 @@ class Tasks(Database):
     def get_topic_id(self, id):
         return self.cursor.execute('select topic_id from tasks where id = ?', (id, )).fetchone()[0]
 
+    def get_tasks_count(self):
+        return len(self.cursor.execute("select id from tasks").fetchall())
+
 
 class Topics(Database):
     def __init__(self):
